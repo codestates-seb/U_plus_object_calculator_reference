@@ -2,24 +2,24 @@ import java.util.Scanner;
 
 public class Calculator {
 
-    Scanner scanner = new Scanner(System.in);
-    String input; // 입력 값을 할당할 변수
+    private Scanner scanner = new Scanner(System.in);
+    private String input; // 입력 값을 할당할 변수
 
-    String left = "";     // 좌항 숫자
-    String operator = ""; // 연산자
-    String right = "";    // 우항 숫자
-    String result;        // 출력 화면에 보일 값
+    private String left = "";     // 좌항 숫자
+    private String operator = ""; // 연산자
+    private String right = "";    // 우항 숫자
+    private String result;        // 출력 화면에 보일 값
+
+    private boolean hasDouble = false; // 좌항 및 우항 중 실수 존재 여부
+    private boolean isReady = false;   // 좌항, 연산자, 우항이 모두 입력되었는지의 여부
 
     public void run() {
-
-        boolean hasDouble = false; // 좌항 및 우항 중 실수 존재 여부
-        boolean isReady = false;   // 좌항, 연산자, 우항이 모두 입력되었는지의 여부
 
         while (true) {
 
             // 좌항, 연산자, 우항이 모두 입력되었다면,
             if (isReady) {
-                result = calculate(left, right, operator, hasDouble); // result에 연산 결과를 할당하고,
+                result = calculate(); // result에 연산 결과를 할당하고,
                 left = result;   // 연속 연산이 가능하도록 left에 연산 결과를 할당한다.
                 operator = "";   // 연산이 끝났으므로 초기화한다.
                 right = "";      // 연산이 끝났으므로 초기화한다.
@@ -38,20 +38,14 @@ public class Calculator {
 
             // 커맨드에 대한 분기를 먼저 처리한다.
             switch (input) {
-
-                // 입력값이 off인 경우, 프로그램을 종료한다.
                 case "off":
                     System.exit(0);
-
-                    // 입력값이 ac인 경우, 좌항, 연산자, 우항, hasDouble을 초기화한다.
                 case "ac":
                     left = "";
                     operator = "";
                     right = "";
                     hasDouble = false;
                     continue;
-
-                    // 입력값이 =인 경우, isReady를 true로 할당하고 다음 반복으로 넘어가 연산 결과가 출력될 수 있도록 한다.
                 case "=":
                     isReady = true;
                     continue;
@@ -81,7 +75,6 @@ public class Calculator {
 
             // 숫자가 아닌 경우 -> 연산자인 경우
             else {
-
                 // 올바른 연산자인지 검사하고, 올바른 연산자라면 operator에 할당한다.
                 if (!Validator.checkIsValidOperator(input)) {
                     System.out.println("올바른 연산자를 입력해주세요.");
@@ -94,8 +87,7 @@ public class Calculator {
     // 화면을 출력한다.
     private static void printDisplay(String result) {
 
-        System.out.println("-".repeat(23)); // "-"를 23번 반복한 문자열을 생성하여 출력한다.
-        // result가 빈 문자열인 경우, 즉 연산이 이루어지지 않은 경우 0을 출력하고, 그렇지 않은 경우 result를 그대로 출력한다.
+        System.out.println("-".repeat(23));
         System.out.printf("| %19s |\n", result.equals("") ? "0" : result);
         System.out.println("-".repeat(23));
         System.out.println("|   +      -      *   |");
@@ -109,13 +101,7 @@ public class Calculator {
     }
 
     // 좌항, 연산자, 우항 및 좌우항 중 실수가 존재하는지의 여부를 입력받아 적절한 연산 메서드를 호출한다.
-    private static String calculate(String left, String right, String operator, boolean hasDouble) {
-
-        /*
-         * return 좌우항 중 실수가 하나라도 있다면 ?
-         *          좌우항 모두를 실수로 변환하여 연산을 수행하고, 문자열로 만들어라 :
-         *          좌우항 모두를 정수로 변환하여 연산을 수행하고, 문자열로 만들어라;
-         * */
+    private String calculate() {
 
         return hasDouble ?
                 calculate(Double.parseDouble(left), Double.parseDouble(right), operator) + "" :
