@@ -85,7 +85,7 @@ public class Calculator {
     }
 
     // 화면을 출력한다.
-    private static void printDisplay(String result) {
+    private void printDisplay(String result) {
 
         System.out.println("-".repeat(23));
         System.out.printf("| %19s |\n", result.equals("") ? "0" : result);
@@ -109,7 +109,7 @@ public class Calculator {
     }
 
     // 좌우항 모두 정수일 때 호출되어, operator에 해당하는 연산을 수행하여 리턴한다.
-    private static int calculate(int left, int right, String operator) {
+    private int calculate(int left, int right, String operator) {
         switch (operator) {
             case "+": return left + right;
             case "-": return left - right;
@@ -121,7 +121,7 @@ public class Calculator {
     }
 
     // 좌우항 모두 실수일 때 호출되어, operator에 해당하는 연산을 수행하여 리턴한다.
-    private static double calculate(double left, double right, String operator) {
+    private double calculate(double left, double right, String operator) {
         switch (operator) {
             case "+": return left + right;
             case "-": return left - right;
